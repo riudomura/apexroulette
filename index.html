@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="APEX S31 レジェンドルーレット">
+<meta property="og:description" content="APEX シーズン31の全28レジェンドから、1人目・2人目・3人目をスロットで抽選。かぶりなし・固定・レジェンドの除外もできる無料ルーレット。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://riudomura.github.io/apexroulette/">
+<meta property="og:image" content="https://riudomura.github.io/apexroulette/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://riudomura.github.io/apexroulette/ogp.png">
+<meta name="description" content="APEX シーズン31の全28レジェンドから、1人目・2人目・3人目をスロットで抽選。かぶりなし・固定・レジェンドの除外もできる無料ルーレット。">
+<style>[hidden]{display:none!important}body{margin:0}</style><title>APEX S31 レジェンドルーレット</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Teko:wght@500;600&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
+<style>
+/* Layout: 3 slot reels side by side (stack on phone) above a toggleable legend pool grouped by class. Single dark "lobby screen" look by choice. */
+:root{
+  color-scheme: dark;
+  --bg:#12161c; --panel:#1b2129; --panel2:#232b35; --line:#323c48;
+  --fg:#e9edf2; --muted:#8e9aa8; --accent:#f2a93b; --accent-ink:#1a1206;
+  --assault:#e5544b; --skirm:#f2a93b; --recon:#4fb6e8; --support:#5fcf7a; --control:#b58cf0;
+  --display:"Dela Gothic One","Zen Kaku Gothic New",system-ui,sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --num:"Teko","Zen Kaku Gothic New",system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;
+  background-image:linear-gradient(transparent 0 calc(100% - 1px),rgba(255,255,255,.025) 0),linear-gradient(90deg,transparent 0 calc(100% - 1px),rgba(255,255,255,.025) 0);
+  background-size:40px 40px;}
+.wrap{max-width:1040px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:grid;gap:28px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.eyebrow{font-family:var(--num);font-size:18px;letter-spacing:.14em;color:var(--accent);line-height:1}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(26px,5vw,40px);margin:6px 0 0;line-height:1.15;text-wrap:balance}
+.meta{color:var(--muted);font-size:13px}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:720px){.slots{grid-template-columns:1fr}}
+.slot{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:12px;position:relative;overflow:hidden}
+.slot::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--cls,var(--line));transition:background .3s}
+.slot-head{display:flex;justify-content:space-between;align-items:center}
+.pick{font-family:var(--num);font-size:22px;letter-spacing:.08em;line-height:1}
+.pick b{font-size:34px;color:var(--accent);margin-right:2px}
+.lock{appearance:none;border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:12px;padding:4px 10px;border-radius:999px;cursor:pointer}
+.lock[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.window{height:104px;overflow:hidden;background:var(--panel2);border-radius:4px;position:relative;
+  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.strip{will-change:transform}
+.cell{height:104px;display:grid;place-content:center;text-align:center;gap:2px}
+.cell .jp{font-family:var(--display);font-size:clamp(22px,3.2vw,28px);line-height:1.1}
+.cell .en{font-family:var(--num);font-size:16px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;line-height:1}
+.cls{justify-self:start;font-size:12px;font-weight:700;padding:3px 9px;border-radius:3px;background:var(--cls,var(--line));color:#11151a;min-height:1em}
+.cls:empty{visibility:hidden}
+.slot.win .window{animation:flash .5s ease-out}
+@keyframes flash{0%{box-shadow:inset 0 0 0 2px var(--accent)}100%{box-shadow:inset 0 0 0 2px transparent}}
+.btn{appearance:none;border:none;font-family:var(--display);font-size:16px;cursor:pointer;border-radius:4px;padding:12px 16px;
+  background:var(--panel2);color:var(--fg);border:1px solid var(--line)}
+.btn:hover{border-color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-size:20px;padding:16px 28px;
+  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.btn.main:hover{filter:brightness(1.08)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:center}
+.opt{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer}
+.opt input{accent-color:var(--accent);width:16px;height:16px}
+.pool{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:16px}
+.pool-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.pool-head h2{font-family:var(--display);font-weight:400;font-size:18px;margin:0}
+.count{font-family:var(--num);font-size:20px;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--fg)}
+.links{display:flex;gap:12px;font-size:13px}
+.links button{appearance:none;background:none;border:none;color:var(--accent);font:inherit;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.group{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:start}
+@media (max-width:560px){.group{grid-template-columns:1fr}}
+.gname{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding-top:6px;cursor:pointer;background:none;border:none;color:var(--fg);font-family:inherit;text-align:left}
+.gname i{width:10px;height:10px;border-radius:2px;background:var(--cls)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{appearance:none;font:inherit;font-size:13px;font-weight:700;padding:6px 11px;border-radius:3px;cursor:pointer;
+  background:transparent;color:var(--fg);border:1px solid var(--cls)}
+.chip[aria-pressed="true"]{background:var(--cls);color:#11151a}
+.chip[aria-pressed="false"]{opacity:.5;text-decoration:line-through}
+.note{color:var(--muted);font-size:12px;line-height:1.7}
+.msg{text-align:center;color:var(--bad,#e5544b);font-size:13px;min-height:1.2em}
+@media (prefers-reduced-motion:reduce){.strip{transition:none!important}.slot.win .window{animation:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">APEX LEGENDS · SEASON 31 CIPHER</div>
+      <h1>レジェンドルーレット</h1>
+    </div>
+    <div class="meta">全28レジェンド ／ 3人分まとめて抽選</div>
+  </header>
+
+  <section class="slots" id="slots" aria-live="polite"></section>
+
+  <div class="controls">
+    <button class="btn main" id="spinAll">3人まとめて回す</button>
+    <label class="opt"><input type="checkbox" id="noDup" checked>3人でかぶらない</label>
+    <label class="opt"><input type="checkbox" id="sound" checked>音あり</label>
+  </div>
+  <div class="msg" id="msg"></div>
+
+  <section class="pool">
+    <div class="pool-head">
+      <h2>抽選に入れるレジェンド</h2>
+      <div class="count"><b id="onCount">28</b> / 28</div>
+      <div class="links"><button id="allOn">全部オン</button><button id="allOff">全部オフ</button></div>
+    </div>
+    <div id="groups" style="display:grid;gap:12px"></div>
+    <p class="note">タップでオン／オフ。クラス名をタップするとそのクラスをまとめて切り替え。設定はこのブラウザに保存されます。<br>
+    シーズン31（2026年11月開始）は新レジェンドなし（クリプト改修）。最新はシーズン29のアクセル。</p>
+  </section>
+</div>
+
+<script>
+const CLASSES=[
+  {id:"assault",name:"アサルト",color:"var(--assault)"},
+  {id:"skirm",name:"スカーミッシャー",color:"var(--skirm)"},
+  {id:"recon",name:"リコン",color:"var(--recon)"},
+  {id:"support",name:"サポート",color:"var(--support)"},
+  {id:"control",name:"コントローラー",color:"var(--control)"},
+];
+const LEGENDS=[
+  ["bangalore","バンガロール","Bangalore","assault"],["fuse","ヒューズ","Fuse","assault"],["ash","アッシュ","Ash","assault"],
+  ["maggie","マッドマギー","Mad Maggie","assault"],["ballistic","バリスティック","Ballistic","assault"],["revenant","レヴナント","Revenant","assault"],
+  ["pathfinder","パスファインダー","Pathfinder","skirm"],["wraith","レイス","Wraith","skirm"],["octane","オクタン","Octane","skirm"],
+  ["horizon","ホライゾン","Horizon","skirm"],["valkyrie","ヴァルキリー","Valkyrie","skirm"],["alter","オルター","Alter","skirm"],["axle","アクセル","Axle","skirm"],
+  ["bloodhound","ブラッドハウンド","Bloodhound","recon"],["crypto","クリプト","Crypto","recon"],["seer","シア","Seer","recon"],
+  ["vantage","ヴァンテージ","Vantage","recon"],["sparrow","スパロー","Sparrow","recon"],
+  ["lifeline","ライフライン","Lifeline","support"],["gibraltar","ジブラルタル","Gibraltar","support"],["mirage","ミラージュ","Mirage","support"],
+  ["loba","ローバ","Loba","support"],["newcastle","ニューキャッスル","Newcastle","support"],["conduit","コンジット","Conduit","support"],
+  ["caustic","コースティック","Caustic","control"],["wattson","ワットソン","Wattson","control"],["rampart","ランパート","Rampart","control"],["catalyst","カタリスト","Catalyst","control"],
+].map(([id,jp,en,cls])=>({id,jp,en,cls}));
+const byId=Object.fromEntries(LEGENDS.map(l=>[l.id,l]));
+const clsOf=id=>CLASSES.find(c=>c.id===id);
+const CELL=104;
+
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+let enabled=new Set(store.get("apex31.enabled",LEGENDS.map(l=>l.id)).filter(id=>byId[id]));
+const $=s=>document.querySelector(s);
+const noDup=$("#noDup"), sound=$("#sound");
+noDup.checked=store.get("apex31.noDup",true); sound.checked=store.get("apex31.sound",true);
+noDup.onchange=()=>store.set("apex31.noDup",noDup.checked); sound.onchange=()=>store.set("apex31.sound",sound.checked);
+
+// sample start state so the page isn't empty
+const slots=[0,1,2].map(i=>({i,result:["wraith","lifeline","bloodhound"][i],locked:false,spinning:false}));
+
+function cellHTML(l){return `<div class="cell"><div class="jp">${l.jp}</div><div class="en">${l.en}</div></div>`}
+function renderSlots(){
+  $("#slots").innerHTML=slots.map(s=>`
+   <div class="slot" id="slot${s.i}">
+     <div class="slot-head"><div class="pick"><b>${s.i+1}</b>人目</div>
+       <button class="lock" data-lock="${s.i}" aria-pressed="false">固定</button></div>
+     <div class="window"><div class="strip"></div></div>
+     <span class="cls"></span>
+     <button class="btn" data-spin="${s.i}">この枠だけ回す</button>
+   </div>`).join("");
+  slots.forEach(s=>showResult(s,false));
+  document.querySelectorAll("[data-lock]").forEach(b=>b.onclick=()=>{const s=slots[+b.dataset.lock];s.locked=!s.locked;b.setAttribute("aria-pressed",s.locked);b.textContent=s.locked?"固定中":"固定";updateButtons()});
+  document.querySelectorAll("[data-spin]").forEach(b=>b.onclick=()=>spin([slots[+b.dataset.spin]]));
+}
+function showResult(s){
+  const el=$("#slot"+s.i), l=byId[s.result];
+  el.querySelector(".strip").style.transition="none";
+  el.querySelector(".strip").style.transform="translateY(0)";
+  el.querySelector(".strip").innerHTML=cellHTML(l);
+  const c=clsOf(l.cls); el.style.setProperty("--cls",c.color);
+  const tag=el.querySelector(".cls"); tag.textContent=c.name; tag.style.setProperty("--cls",c.color);
+}
+
+let ac;
+function beep(freq,dur,vol=.08,type="square"){
+  if(!sound.checked)return;
+  try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=freq;
+    g.gain.setValueAtTime(vol,ac.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+dur);
+    o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+dur);}catch{}
+}
+
+function pickResults(targets){
+  const pool=[...enabled];
+  const keep=new Set(slots.filter(s=>!targets.includes(s)).map(s=>s.result));
+  let avail=noDup.checked?pool.filter(id=>!keep.has(id)):pool;
+  if(avail.length<(noDup.checked?targets.length:1)) return null;
+  const out=[];
+  for(const t of targets){
+    const choices=noDup.checked?avail.filter(id=>!out.includes(id)):avail;
+    out.push(choices[Math.floor(Math.random()*choices.length)]);
+  }
+  return out;
+}
+
+function spin(targets){
+  targets=targets.filter(s=>!s.spinning);
+  if(!targets.length)return;
+  const res=pickResults(targets);
+  if(!res){$("#msg").textContent="抽選できるレジェンドが足りません。下の一覧でオンにしてください。";return}
+  $("#msg").textContent="";
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pool=[...enabled];
+  targets.forEach((s,k)=>{
+    const prev=s.result;
+    s.spinning=true; s.result=res[k];
+    const el=$("#slot"+s.i), strip=el.querySelector(".strip");
+    el.classList.remove("win");
+    const n=reduce?1:26+k*8;
+    const seq=[byId[prev]];
+    for(let j=0;j<n;j++) seq.push(byId[pool[Math.floor(Math.random()*pool.length)]]);
+    seq.push(byId[res[k]]);
+    strip.style.transition="none";strip.style.transform="translateY(0)";
+    strip.innerHTML=seq.map(cellHTML).join("");
+    el.style.setProperty("--cls","var(--line)"); el.querySelector(".cls").textContent="";
+    void strip.offsetHeight;
+    const dur=reduce?0:1700+k*550;
+    strip.style.transition=`transform ${dur}ms cubic-bezier(.12,.62,.18,1)`;
+    strip.style.transform=`translateY(-${(seq.length-1)*CELL}px)`;
+    // tick sounds following the reel
+    if(!reduce){let last=-1;const t0=performance.now();
+      const tick=()=>{if(!s.spinning)return;const m=new DOMMatrix(getComputedStyle(strip).transform);const idx=Math.floor(-m.m42/CELL);
+        if(idx!==last){last=idx;beep(900+k*120,.03,.035)} if(performance.now()-t0<dur)requestAnimationFrame(tick)};requestAnimationFrame(tick)}
+    setTimeout(()=>{s.spinning=false;strip.dataset.cur=s.result;showResult(s);el.classList.add("win");beep(660+k*110,.18,.07,"triangle");setTimeout(()=>beep(990+k*110,.22,.06,"triangle"),90);updateButtons()},dur+30);
+  });
+  updateButtons();
+}
+
+function updateButtons(){
+  const any=slots.some(s=>s.spinning);
+  $("#spinAll").disabled=any||slots.every(s=>s.locked);
+  document.querySelectorAll("[data-spin]").forEach(b=>b.disabled=slots[+b.dataset.spin].spinning||slots[+b.dataset.spin].locked);
+}
+$("#spinAll").onclick=()=>spin(slots.filter(s=>!s.locked));
+
+function renderPool(){
+  $("#groups").innerHTML=CLASSES.map(c=>`
+    <div class="group" style="--cls:${c.color}">
+      <button class="gname" data-cls="${c.id}"><i></i>${c.name}</button>
+      <div class="chips">${LEGENDS.filter(l=>l.cls===c.id).map(l=>`<button class="chip" data-id="${l.id}" aria-pressed="${enabled.has(l.id)}">${l.jp}</button>`).join("")}</div>
+    </div>`).join("");
+  $("#onCount").textContent=enabled.size;
+  document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const id=b.dataset.id;enabled.has(id)?enabled.delete(id):enabled.add(id);save()});
+  document.querySelectorAll(".gname").forEach(b=>b.onclick=()=>{const ids=LEGENDS.filter(l=>l.cls===b.dataset.cls).map(l=>l.id);const allOn=ids.every(i=>enabled.has(i));ids.forEach(i=>allOn?enabled.delete(i):enabled.add(i));save()});
+}
+function save(){store.set("apex31.enabled",[...enabled]);renderPool()}
+$("#allOn").onclick=()=>{enabled=new Set(LEGENDS.map(l=>l.id));save()};
+$("#allOff").onclick=()=>{enabled=new Set();save()};
+
+renderSlots();renderPool();updateButtons();
+</script>
+</body>
+</html>
